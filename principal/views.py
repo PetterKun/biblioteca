@@ -65,7 +65,6 @@ def perfil(request):
     
 def registro(request):
     if request.method == 'POST':
-        print 'hola'
         formulario = RegistroForm(request.POST, request.FILES)
         if formulario.is_valid():
             usuario = formulario.cleaned_data['username']
@@ -85,8 +84,6 @@ def registro(request):
             foto = formulario.cleaned_data['foto']
             twitter = formulario.cleaned_data['twitter']
             facebook = formulario.cleaned_data['facebook']   
-            
-            print 'llego'
             
             u = User.objects.create_user(username=usuario, email=email, password=password_one)
             u.first_name = first_name
