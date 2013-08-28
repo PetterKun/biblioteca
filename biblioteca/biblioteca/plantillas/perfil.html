@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Perfil {% endblock %}
+
+{% block encabezado %} 
+	<h1>Perfil de Usuario</h1>
+{% endblock %}
+
+{% block contenido %}
+	<p>Bienvenido {{usuario.username|upper}},
+		la última vez que te vimos por aquí fue el {{usuario.last_login}}.</p>
+		<p>Eres miembro desde el {{usuario.date_joined}}</p>
+		<a href='/logout'>Cerrar sesión</a>
+{% endblock %}
+

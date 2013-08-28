@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang='es'>
+	<head>
+		<meta charset='UTF-8'>
+		<title>Biblioteca Akiba-Kei - {% block titulo %}{% endblock %}</title>
+		<!-- <link rel='stylesheet' href='{{STATIC_URL}}css/base.css'> 
+		<link rel='shortcut icon' href='{{STATIC_URL}}img/favicon.png'> -->
+		<style>
+			{% block style_css %}{% endblock %}
+		</style>
+	</head>
+	<body>
+		<header>
+			{% block encabezado %}{% endblock %}
+			<nav>
+				<ul id='menu'>
+					<li><a href='/'>Inicio</a></li>
+					<li><a href='/perfil'>Perfil</a></li>
+					<li><a href='/biblioteca'>Biblioteca</a></li>
+					<li><a href='/videoteca'>Videoteca</a></li>
+					<li><a href='/ayuda'>Ayuda</a></li>
+					<li><a href='/contacto'>Contacto</a></li>
+				</ul>
+			</nav>
+			<hr>
+		</header>
+		<section class='contenido'>
+			{% block contenido %}{% endblock %}
+		</section>
+		<footer>
+			<p>Akiba-Kei Asociación Juvenil &copy;2012</p>
+		</footer>
+	</body>
+</html>

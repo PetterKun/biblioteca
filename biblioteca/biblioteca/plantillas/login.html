@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Login {% endblock %}
+
+{% block encabezado %} 
+	<h1>Entrar</h1>
+{% endblock %}
+
+{% block contenido %}
+	<form id='formulario' method='post' action=''>{% csrf_token %}
+		<table>{{formulario}}</table>
+		<p> <input type="submit" value="Entrar"/></p>
+	</form>
+	<a href="/recuperar">¿Olvidaste la contraseña?</a>
+	<a href="/registro">Registrarse</a>
+	<p>{{estado}}</p>
+{% endblock %}
