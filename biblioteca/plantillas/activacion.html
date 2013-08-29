@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Activación {% endblock %}
+
+{% block encabezado %} 
+	<h1>Activar la cuenta</h1>
+{% endblock %}
+
+{% block contenido %}
+	<form id='formulario' method='post' action=''>{% csrf_token %}
+		<table>{{formulario}}</table>
+		<p> <input type="submit" value="Validar"/></p>
+	</form>
+	<p>{{estado}}</p>
+{% endblock %}

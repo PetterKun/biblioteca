@@ -7,9 +7,10 @@ from django.template import RequestContext
 from django.core.mail import EmailMessage
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from principal.forms import RegistroForm
+from principal.forms import RegistroForm, ActivacionForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from principal.funciones import *
 
 def inicio(request):
     if not request.user.is_anonymous():
@@ -28,13 +29,18 @@ def entrar(request):
             clave = request.POST['password']
             acceso = authenticate(username=usuario, password=clave)
             if acceso is not None:
-                if acceso.is_active and (acceso.estado == 'a') and (acceso.tipo_usuario == 's' or acceso.tipo_usuario == 'a'):
+                if acceso.is_active and acceso.estado == 'a': 
                     login(request, acceso)
                     return HttpResponseRedirect('/perfil')
-                elif acceso.tipo_usuario == 'n':
-                    estado = "Debes ser socio de la asociación para acceder al servicio de biblioteca."
                 else:
-                    estado = "Tu cuenta esta desactivada o bloqueada."
+                    pin = generarPin()
+                    acceso.pin = pin
+                    acceso.save()
+                    #titulo = 'Pin de activación - Akiba-Kei Asociación Juvenil'
+                    #contenido = 'Tu pin es: ' + pin
+                    #correo = EmailMessage(titulo, contenido, to=[acceso.email])
+                    #correo.send()
+                    return HttpResponseRedirect('/activar')
             else:
                 estado = "El usuario y/o la contraseña son incorrectos."
     else:
@@ -47,7 +53,6 @@ def entrar(request):
                               },
                               context_instance=RequestContext(request)
                          )
-    
     
 @login_required(login_url='/login') 
 def salir(request):
@@ -100,11 +105,7 @@ def registro(request):
             u.twitter = twitter
             u.facebook = facebook
             
-            print 'llego2'
-            
             u.save()
-            
-            print 'llego3'
             
             return HttpResponseRedirect('/login')
     else:
@@ -114,4 +115,51 @@ def registro(request):
                               {'formulario':formulario}, 
                               context_instance=RequestContext(request))
 
-    
+
+def activacion(request):
+    estado = ""
+    if not request.user.is_anonymous():
+        return HttpResponseRedirect('/perfil')
+    if request.method == 'POST':
+        formulario = ActivacionForm(request.POST)
+        if formulario.is_valid():
+            usuario = formulario.cleaned_data['username']
+            password = formulario.cleaned_data['password']
+            pin = formulario.cleaned_data['pin']
+            acceso = authenticate(username=usuario, password=password)
+            if acceso is not None:
+                if acceso.pin == pin:
+                    acceso.is_active = True
+                    acceso.estado = 'a'
+                    acceso.save()
+                    return HttpResponseRedirect('/login')
+                else:
+                    estado = "El pin introducido es incorrecto, por favor intentelo de nuevo."
+                    pin = generarPin()
+                    acceso.pin = pin
+                    acceso.save()
+                    print pin
+                    #titulo = 'Pin de activación - Akiba-Kei Asociación Juvenil'
+                    #contenido = 'Tu pin es: ' + pin
+                    #correo = EmailMessage(titulo, contenido, to=[acceso.email])
+                    #correo.send()
+            else:
+                estado = "El usuario y/o la contraseña son incorrectas."
+    else:
+        formulario = ActivacionForm()
+        
+    return render_to_response('activacion.html',
+                                {
+                                 'formulario': formulario,
+                                 'estado':estado
+                                 },
+                                context_instance=RequestContext(request)
+                            )
+                
+            
+            
+            
+            
+            
+            
+            

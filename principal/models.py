@@ -70,10 +70,11 @@ User.add_to_class('cp', models.IntegerField(null=True, blank=True, verbose_name=
 User.add_to_class('poblacion', models.CharField(blank=True, verbose_name="Población", max_length=50))
 User.add_to_class('provincia', models.CharField(blank=True, verbose_name="Provincia", max_length=20))
 User.add_to_class('telefono', models.IntegerField(null=True, blank=True, verbose_name="Teléfono"))
-User.add_to_class('foto', models.ImageField(upload_to='foto_perfil', verbose_name="Fotografía"))
+User.add_to_class('foto', models.ImageField(blank=True, upload_to='foto_perfil', verbose_name="Fotografía"))
 User.add_to_class('estado', models.CharField(blank=False, max_length=1, verbose_name="Estado de la cuenta", choices=ESTADO_CUENTA, default='d'))
 User.add_to_class('twitter', models.CharField(blank=True, max_length=20, verbose_name="Cuenta de Twitter"))
 User.add_to_class('facebook', models.CharField(blank=True, max_length=50, verbose_name="Cuenta de Facebook"))
+User.add_to_class('pin', models.IntegerField(null=False, max_length=4, verbose_name="Pin de verificación", default=0))
 
 
 #############################################  Clase RECURSO  ##################################################

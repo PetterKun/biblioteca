@@ -20,4 +20,5 @@ urlpatterns = patterns('',
     url(r'^perfil/$', 'principal.views.perfil'),
     url(r'^logout/$', 'principal.views.salir'),
     url(r'^registro/$', 'principal.views.registro'),
+    url(r'^activar/$', 'principal.views.activacion'),
 )
