@@ -61,19 +61,19 @@ ESTADO_CUENTA = (
 ##                             Clase genérica para los tipos de datos a añadir                                ##
 ################################################################################################################
 
-User.add_to_class('dni', models.CharField(unique=True, blank=False, verbose_name="DNI", max_length=9))
+User.add_to_class('dni', models.CharField(blank=True, verbose_name="DNI", max_length=9))
 User.add_to_class('sexo', models.CharField(blank=False, verbose_name="Sexo", max_length=1, choices=TIPO_SEXO))
-User.add_to_class('fecha_nacimiento', models.DateField(blank=True, null=True, verbose_name="Fecha de nacimiento"))
+User.add_to_class('fecha_nacimiento', models.DateField(null=True, blank=True, verbose_name="Fecha de nacimiento"))
 User.add_to_class('tipo_usuario', models.CharField(blank=False, verbose_name="Tipo de Usuario", max_length=1, choices=TIPO_USUARIO, default='n'))
-User.add_to_class('direccion', models.CharField(blank=True, null=True, verbose_name="Dirección", max_length=100))
-User.add_to_class('cp', models.IntegerField(blank=True, null=True, verbose_name="Código postal"))
-User.add_to_class('poblacion', models.CharField(blank=True, null=True, verbose_name="Población", max_length=50))
-User.add_to_class('provincia', models.CharField(blank=True, null=True, verbose_name="Provincia", max_length=20))
-User.add_to_class('telefono', models.IntegerField(blank=True, null=True, verbose_name="Teléfono"))
-User.add_to_class('foto', models.ImageField(upload_to='foto_perfil', blank=True, verbose_name="Fotografía"))
+User.add_to_class('direccion', models.CharField(blank=True, verbose_name="Dirección", max_length=100))
+User.add_to_class('cp', models.IntegerField(null=True, blank=True, verbose_name="Código postal"))
+User.add_to_class('poblacion', models.CharField(blank=True, verbose_name="Población", max_length=50))
+User.add_to_class('provincia', models.CharField(blank=True, verbose_name="Provincia", max_length=20))
+User.add_to_class('telefono', models.IntegerField(null=True, blank=True, verbose_name="Teléfono"))
+User.add_to_class('foto', models.ImageField(upload_to='foto_perfil', verbose_name="Fotografía"))
 User.add_to_class('estado', models.CharField(blank=False, max_length=1, verbose_name="Estado de la cuenta", choices=ESTADO_CUENTA, default='d'))
-User.add_to_class('twitter', models.CharField(blank=True, null=True, max_length=20, verbose_name="Cuenta de Twitter"))
-User.add_to_class('facebook', models.CharField(blank=True, null=True, max_length=50, verbose_name="Cuenta de Facebook"))
+User.add_to_class('twitter', models.CharField(blank=True, max_length=20, verbose_name="Cuenta de Twitter"))
+User.add_to_class('facebook', models.CharField(blank=True, max_length=50, verbose_name="Cuenta de Facebook"))
 
 
 #############################################  Clase RECURSO  ##################################################
