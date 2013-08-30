@@ -7,10 +7,12 @@ from django.template import RequestContext
 from django.core.mail import EmailMessage
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from principal.forms import RegistroForm, ActivacionForm
+from principal.forms import RegistroForm, ActivacionForm, ObraForm, VideoForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from principal.funciones import *
+from django.db.models import Q
 
 def inicio(request):
     if not request.user.is_anonymous():
@@ -156,10 +158,52 @@ def activacion(request):
                                 context_instance=RequestContext(request)
                             )
                 
+@staff_member_required
+def insertarObra(request):
+    if request.method == "POST":
+        formulario = ObraForm(request.POST, request.FILES)
+        if formulario.is_valid():
+            formulario.save()
+            return HttpResponseRedirect('/agregarObra')
+    else:
+        formulario = ObraForm()
+    return render_to_response('agregarobra.html',
+                              {'formulario':formulario},
+                              context_instance=RequestContext(request)
+                              )
             
-            
-            
-            
-            
-            
-            
+@login_required(login_url='/login')         
+def buscarObra(request):
+    query_q = request.GET.get('q', '')
+    query_s = request.GET.get('s', '')
+    if query_q and query_s:
+        if query_s == 'titulo':
+            qset = Q(titulo__icontains = query_q)
+        elif query_s == 'autor':
+            qset = Q(autor__icontains = query_q)
+        elif query_s == 'editorial':
+            qset = Q(editorial__icontains = query_q)
+        elif query_s == 'genero':
+            qset = Q(genero__icontains = query_q)
+        elif query_s == 'palabra_clave':
+            qset = Q(palabra_clave__icontains = query_q)
+        resultados = Obra.objects.filter(qset)
+    else:
+        resultados = []
+        
+    return render_to_response('busquedaObra.html',
+                              {
+                                'resultados':resultados,
+                                'query_q':query_q,
+                                'query_s':query_s
+                               },
+                              context_instance=RequestContext(request)
+                              )      
+    
+    
+def detalleObra(request, id_obra):
+    dato = get_object_or_404(Obra, pk=id_obra)
+    return render_to_response('obra.html', 
+                              {'obra':dato},
+                              context_instance=RequestContext(request)                      
+    )    

@@ -57,6 +57,14 @@ ESTADO_CUENTA = (
                     ('b', 'Bloqueada'),
                     ('s', 'Suspendida'),
                  )
+
+TIPO_BUSQUEDA_OBRA = (
+                    ('titulo', 'Título'),
+                    ('autor', 'Autor'),
+                    ('editorial', 'Editorial'),
+                    ('genero', 'Género'),
+                    ('palabra_clave', 'Palabra Clave'),
+                 )
 #############################################  Clase RECURSO  ##################################################
 ##                             Clase genérica para los tipos de datos a añadir                                ##
 ################################################################################################################
@@ -98,7 +106,7 @@ class Recurso(models.Model):
     imagen = models.ImageField(upload_to='imagenes_obras', blank=True, verbose_name="Fotografía")
     
     def __unicode__(self):
-        return u"%s," % self.titulo
+        return u"%s %d" % (self.titulo, self.volumen)
         
         
 #############################################  Clase OBRA  #####################################################

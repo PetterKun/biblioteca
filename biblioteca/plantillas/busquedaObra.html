@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Buscar Obra {% endblock %}
+
+{% block style_css %}
+	img {width: 50px; heigth:50px;}
+{% endblock %}
+
+{% block encabezado %} 
+	<h1>Buscar Obra</h1>
+{% endblock %}
+
+{% block contenido %}
+	<form method='GET' action='.'> {% csrf_token %}
+		<label>Búsqueda: </label>
+		<select name="s">
+			<option value="titulo">Titulo</option>
+  			<option value="autor">Autor</option>
+  			<option value="editorial">Editorial</option>
+  			<option value="genero">Genero</option>
+  			<option value="palabra_clave">Palabra clave</option>
+		</select>
+		<input type="text" name="q" value="{{query_q|escape}}"/>
+		<label>Volumen: </label><input type="text" name="v" value="{{query|escape}}"/>
+		<label>Autor: </label><input type="text" name="a" value="{{query|escape}}"/>
+		<label>Editorial: </label><input type="text" name="e" value="{{query|escape}}"/>
+		<label>Palabra clave: </label><input type="text" name="p" value="{{query|escape}}"/>
+		<label>Tipo de obra: </label>
+		<select name="t">
+			<option value="mg">Manga</option>
+  			<option value="mw">Manhwa</option>
+  			<option value="ce">Cómic europeo</option>
+  			<option value="ca">Cómic americano</option>
+  			<option value="cs">Cómic español</option>
+  			<option value="lb">Libro</option>
+  			<option value="ng">Novela gráfica</option>
+		</select>
+		
+		<p> <input type="submit" value="Buscar"/></p>
+	</form>
+	
+	{% if query_q %}
+		<h2> Resultados de la búsqueda </h2>
+		{% if resultados %}
+			<ul>
+				{% for obra in resultados %}
+					<li>
+						<a href='/obra/{{obra.id }}'>
+							<img src='{{MEDIA_URL}}{{obra.imagen}}'> {{ obra.titulo|escape }} {{obra.volumen}} | {{obra.genero}} | {% if obra.estado == "d" %} Disponible {% else %} No disponible {% endif %} 
+						</a>
+					</li>
+				{% endfor %}				
+			</ul>
+		{% else %}
+			<p>No se han encontrado obras para la búsqueda realizada.</p>
+		{% endif %}
+	{% endif %}
+{% endblock %}

@@ -2,7 +2,7 @@
 
 from django.forms import ModelForm
 from django import forms
-from principal.models import Obra, Video, TIPO_SEXO
+from principal.models import Obra, Video, TIPO_SEXO, TIPO_BUSQUEDA_OBRA, TIPO_DE_OBRA
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
@@ -62,5 +62,21 @@ class ActivacionForm(forms.Form):
     username = forms.CharField(label="Usuario", widget=forms.TextInput())
     password = forms.CharField(label="Contraseña", widget=forms.PasswordInput(render_value=False))
     pin = forms.IntegerField(label="Pin de validación", widget=forms.TextInput())
+    
+            
+class ObraForm(ModelForm):
+    class Meta:
+        model = Obra
         
-        
+    def clean_codigo(self):
+        codigo = self.cleaned_data['codigo']
+        try:
+            obra = Obra.objects.get(codigo=codigo)
+        except Obra.DoesNotExist:
+            return codigo
+        raise forms.ValidationError("El código introducido ya existe.")
+    
+    
+class VideoForm(ModelForm):
+    class Meta:
+        model = Video

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block titulo %} Nueva Obra {% endblock %}
+
+{% block encabezado %} 
+	<h1>Nueva Obra</h1>
+{% endblock %}
+
+{% block contenido %}
+	<form id='formulario' method='post' action=''>{% csrf_token %}
+		<table>{{formulario.as_table}}</table>
+		<p> <input type="submit" value="Añadir"/></p>
+	</form>
+{% endblock %}
